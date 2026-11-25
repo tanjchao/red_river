@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>說文解圖｜滿江紅・古文火箭升空正式版 V1.0</title>
+<style>
+:root{--ink:#2c2b30;--paper:#fff9eb;--bronze:#8b5c35;--gold:#e7b86b;--deep:#101b35;--cell:54px}
+*{box-sizing:border-box}html{font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif}body{margin:0;background:radial-gradient(circle at 50% 0%,#314368 0,#182743 36%,#101729 100%);color:#fff9ec;min-height:100vh}button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #ffe0a4;outline-offset:3px}
+.wrap{max-width:1110px;padding:22px 16px 45px;margin:auto}.head{text-align:center;margin-bottom:17px}.head .eyebrow{color:#f2cd8f;font-size:.82rem;font-weight:900;letter-spacing:.18em}.head h1{font-size:clamp(1.9rem,5vw,2.9rem);margin:7px 0 8px;letter-spacing:.07em}.head p{max-width:850px;line-height:1.65;color:#d8dcdf;margin:0 auto}.topstrip{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 16px;background:#fff5da12;border:1px solid #b7a17766;border-radius:16px;margin-bottom:14px}.topstrip b{color:#fbe1af}.stats{display:flex;gap:14px;flex-wrap:wrap;font-weight:900}.stats strong{font-variant-numeric:tabular-nums;color:#f6d495}.rule{border:1px solid #d9b57955;border-radius:15px;background:#fcf0d312;padding:13px 16px;margin-bottom:15px;line-height:1.65;color:#e2e7ec;font-size:.94rem}
+.sky{position:relative;padding:25px 13px 22px;overflow:hidden;border-radius:24px;background:radial-gradient(circle at 50% 80%,#657b91aa 0,transparent 50%),linear-gradient(180deg,#1b2d4d 0%,#304961 55%,#73513e 100%);border:3px solid #d8ac70;box-shadow:0 16px 50px #0005;isolation:isolate}.sky:before{content:"";position:absolute;inset:0;background-image:radial-gradient(#fff 1.15px,transparent 1.8px),radial-gradient(#ffe1ad 1px,transparent 1.8px);background-size:89px 111px,131px 153px;background-position:5px 13px,46px 71px;opacity:.32;pointer-events:none}.sky:after{content:"";position:absolute;left:0;right:0;bottom:0;height:22px;background:repeating-linear-gradient(90deg,#544333,#69503a 0 23px,#98784d 25px 27px);z-index:0;pointer-events:none}
+.columns{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(7px,1.3vw,16px);max-width:720px;margin:auto;align-items:start;z-index:1}.station{position:relative;min-width:0;border:1px solid #ead1a36b;background:linear-gradient(180deg,#17253fcb,#263347b8);border-radius:15px;padding:12px 8px 10px;text-align:center;min-height:calc(var(--rows) * var(--cell) + 116px)}.station .name{font-weight:950;color:#f7dfb1;font-size:clamp(.78rem,1.8vw,1.06rem);white-space:nowrap}.station .clock{font-size:.78rem;font-weight:900;color:#bdcdd5;margin:5px 0 8px;font-variant-numeric:tabular-nums}.station .outcome{font-size:.75rem;color:#ffe3a8;font-weight:900;min-height:24px;margin-top:5px;line-height:1.3}
+.rocket-shell{position:relative;margin:20px auto 0;width:100%;max-width:155px;will-change:transform;transform-origin:50% 100%;z-index:2}.rocket-shell .nose{height:25px;width:66%;margin:-16px auto 0;background:linear-gradient(95deg,#987348,#ffe1ad 58%,#9c6d3f);clip-path:polygon(50% 0,100% 100%,0 100%);filter:drop-shadow(0 -2px 2px #0006)}.rocket-shell .fins{position:absolute;bottom:-8px;left:-9%;right:-9%;height:50px;background:linear-gradient(90deg,#b36b43,#f7d298 23%,transparent 27%,transparent 73%,#f7d298 77%,#b36b43);clip-path:polygon(0 100%,16% 0,84% 0,100% 100%);pointer-events:none}.shaft{position:relative;width:100%;height:calc(var(--rows) * var(--cell));border-radius:11px 11px 6px 6px;border:3px solid #aa794a;background:linear-gradient(90deg,#a78252 0%,#e4c28d 15%,#f8edcb 48%,#e8c799 80%,#9b713f 100%);box-shadow:inset 0 0 16px #80552244,0 8px 17px #0006;touch-action:none}.shaft:before{content:"";position:absolute;inset:2px;border-radius:7px;border:2px solid #88663a55;pointer-events:none}.shaft:after{content:"";position:absolute;left:50%;top:0;bottom:0;transform:translateX(-50%);width:1px;opacity:.15;background:#6c482e;pointer-events:none}
+.tile{position:absolute;left:5px;right:5px;height:calc(var(--cell) - 4px);display:grid;place-items:center;background:linear-gradient(155deg,#fff9e7,#ead0a0 66%,#cda069);border:2px solid #8c6135;border-radius:9px;color:#292923;font-weight:950;font-size:clamp(1.5rem,3.7vw,2rem);line-height:1;box-shadow:0 3px 0 #986a3f,0 5px 6px #32291e38;text-shadow:0 1px #fff5d4;transition:top .12s ease;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;z-index:2}.tile.dragging{cursor:grabbing;z-index:9;transition:none;transform:scale(1.1);background:linear-gradient(145deg,#fffbee,#ffe2a0 75%,#e6ad59);box-shadow:0 6px 18px #0005,0 0 0 2px #ffe9af}.station.solved .tile{background:linear-gradient(155deg,#fffbe5,#f3e4bb,#d9b46d);border-color:#b78342;box-shadow:0 0 12px #ffe99a91,0 3px 0 #966633}.station.solved .shaft{box-shadow:0 0 24px #ffd17a,0 5px 15px #0008}
+.rocket-shell .thruster{position:absolute;left:30%;right:30%;bottom:-9px;height:12px;border-radius:0 0 10px 10px;background:#705044;border:2px solid #e9ba71;z-index:4}.flame{position:absolute;left:23%;right:23%;bottom:-20px;height:0;opacity:0;pointer-events:none;z-index:0;transform-origin:50% 0;background:linear-gradient(180deg,#fffef7 0%,#ffdf60 28%,#ff7c2b 63%,#ff4b29 85%,transparent 100%);clip-path:polygon(8% 0,92% 0,72% 53%,50% 100%,22% 53%);filter:drop-shadow(0 0 15px #ffad35)}
+.station.igniting .flame,.station.launching .flame{height:110px;opacity:1;animation:flamePulse .11s ease-in-out infinite alternate}.station.igniting .rocket-shell{animation:shake .085s linear infinite alternate}.station.launching .rocket-shell{animation:rise 2.55s cubic-bezier(.68,.02,1,1) forwards}.station.launching .flame{height:145px}.station.launched .rocket-shell{visibility:hidden}.station.launched .outcome{color:#aff0c4}.station.launched .clock{color:#d5f5d8}.station.launched .station-marker{opacity:1}
+.station-marker{position:absolute;top:42%;left:0;right:0;opacity:0;color:#eaffee;font-size:clamp(.85rem,2vw,1.2rem);font-weight:950;text-shadow:0 2px 8px #000a;line-height:1.75}.station-marker small{display:block;color:#ffe3a2;font-size:.81rem}
+@keyframes flamePulse{from{transform:scaleX(.8) scaleY(.91);filter:drop-shadow(0 0 9px #ff7c36)}to{transform:scaleX(1.16) scaleY(1.2);filter:drop-shadow(0 0 22px #ffc34e)}}@keyframes shake{0%{transform:translate(-1px,0) rotate(-.4deg)}100%{transform:translate(2px,-2px) rotate(.4deg)}}@keyframes rise{0%{transform:translateY(0) scale(1);opacity:1}27%{transform:translateY(-27px) scale(1);opacity:1}58%{opacity:1}100%{transform:translateY(-135vh) scale(.78);opacity:0}}
+.controls{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:18px auto 0}.controls button,.finish button{border:1px solid #e8bc7b;border-radius:11px;padding:11px 18px;background:linear-gradient(#f6d9a6,#d9a565);color:#3f2c19;font-weight:950;box-shadow:0 3px 0 #977040}.controls button:nth-child(2){background:#f3ead5}.legend{margin:12px 0 0;text-align:center;color:#d5dbe3;font-size:.88rem;line-height:1.6}.finish{padding:26px;text-align:center;background:#1c344a;border:2px solid #f1c779;border-radius:18px;margin-top:18px}.finish h2{font-size:1.7rem;margin:7px 0}.finish p{color:#e7e6d9}.hidden{display:none!important}
+@media(max-width:670px){:root{--cell:46px}.wrap{padding:12px 5px 25px}.head{margin-bottom:13px}.head h1{font-size:1.68rem}.head p{font-size:.84rem}.topstrip{padding:10px}.rule{font-size:.84rem;padding:10px}.sky{padding:18px 4px 15px;border-width:2px;border-radius:15px}.columns{gap:7px}.station{padding:8px 5px 8px;min-height:calc(var(--rows) * var(--cell) + 100px);border-radius:9px}.station .name{font-size:.88rem;letter-spacing:-.03em}.station .clock{font-size:.65rem;margin:3px 0 4px}.station .outcome{font-size:.62rem}.rocket-shell{margin-top:18px}.rocket-shell .nose{height:19px;margin-top:-12px}.shaft{border-width:2px;border-radius:6px}.tile{left:2px;right:2px;height:calc(var(--cell) - 3px);border-radius:6px;border-width:1px;font-size:clamp(1.65rem,6vw,2rem);box-shadow:0 2px 0 #986a3f,0 3px 5px #32291e38}.station-marker{font-size:.84rem}.flame{bottom:-16px}.rocket-shell .fins{left:-5%;right:-5%}}
+@media(max-width:390px){:root{--cell:44px}.station .name{font-size:.77rem}.tile{font-size:1.65rem}.rocket-shell .nose{height:17px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <header class="head"><div class="eyebrow">說文解圖・滿江紅・整合版</div><h1>🚀 古文火箭升空</h1><p>本章三支文字火箭同時待命。任選一句先整理，按住單字上下拖動、逐格交換；正確後立即點火升空！</p></header>
+ <div class="topstrip"><b><span id="chapterName">第一章・三箭齊發</span>｜《滿江紅》</b><div class="stats"><span>已升空 <strong id="launched">0 / 3</strong></span><span>總分 <strong id="score">0</strong></span><span>本局 <strong id="totalTime">00:00</strong></span></div></div>
+ <div class="rule">🎯 <b>操作：</b>按住任一字，向上或向下拖；每跨過一格就會和該格文字交換，不放手也能連續交換。放手後文字停在新位置。<b>同一列所有字全部排對，便自動發射。</b>每列保留原文用字、暫不顯示標點；從首次移動起計時，完成得 100 分＋速度獎勵（最多 100 分），越快越高！</div>
+ <section class="sky" aria-label="三座可操作文字火箭" id="sky"><div class="columns" id="columns"></div></section>
+ <div class="controls"><button id="shuffle" type="button">↻ 重新洗牌（本章重新計分）</button><button id="sound" type="button" aria-pressed="true">🔊 引擎音效：開</button></div>
+ <p class="legend">本關得分會計入《滿江紅》正式遊戲總分與排行榜；請完成三支後按「返回本章漫畫回顧」。</p>
+ <section class="finish hidden" id="finish"><div style="font-size:3rem">🎆</div><h2>第一章三箭全數升空！</h2><p id="result"></p><button id="again" type="button">進入第二章 →</button></section>
+</div>
+<script>
+(()=>{
+'use strict';
+const CHAPTERS=[
+ {name:'第一章・三箭齊發',text:['怒髮衝冠憑闌處','三十功名塵與土','八千里路雲和月']},
+ {name:'第二章・壯志凌雲',text:['駕長車踏破賀蘭山缺','壯志飢飡胡虜肉','笑談渴飲匈奴血']}
+];
+const $=s=>document.querySelector(s), clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const stations=[];
+let points=0,flightCount=0,roundStart=performance.now(),chapterStart=performance.now(),chapter=0,chapterEntryPoints=0,soundOn=true,roundToken=0,raf=null,rocketBase=0,rocketSpeed=0;
+let audioCtx=null;
+function ctx(){try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;audioCtx??=new A();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}catch(e){return null}}
+function launchSound(){
+ if(!soundOn)return;const ac=ctx();if(!ac)return;
+ try{
+  const t=ac.currentTime,d=2.8;
+  // 尖銳的高頻渦輪上升音 + 低頻底噪；整體輸出保守，避免手機喇叭破音。
+  const master=ac.createGain();master.gain.value=.26;master.connect(ac.destination);
+  const osc=ac.createOscillator(),g=ac.createGain(),f=ac.createBiquadFilter();
+  osc.type='sawtooth';osc.frequency.setValueAtTime(115,t);osc.frequency.exponentialRampToValueAtTime(980,t+2.55);
+  f.type='bandpass';f.frequency.setValueAtTime(650,t);f.frequency.exponentialRampToValueAtTime(2300,t+2.55);f.Q.value=.75;
+  g.gain.setValueAtTime(.001,t);g.gain.linearRampToValueAtTime(.14,t+.45);g.gain.setValueAtTime(.14,t+1.55);g.gain.exponentialRampToValueAtTime(.0001,t+2.78);
+  osc.connect(f).connect(g).connect(master);osc.start(t);osc.stop(t+d);
+  const whistle=ac.createOscillator(),wg=ac.createGain();whistle.type='triangle';whistle.frequency.setValueAtTime(580,t);whistle.frequency.exponentialRampToValueAtTime(1680,t+2.5);
+  wg.gain.setValueAtTime(.0001,t);wg.gain.linearRampToValueAtTime(.045,t+.85);wg.gain.exponentialRampToValueAtTime(.0001,t+2.75);
+  whistle.connect(wg).connect(master);whistle.start(t);whistle.stop(t+d);
+  const buffer=ac.createBuffer(1,Math.ceil(ac.sampleRate*d),ac.sampleRate),data=buffer.getChannelData(0);
+  for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.45;
+  const noise=ac.createBufferSource(),hp=ac.createBiquadFilter(),ng=ac.createGain();noise.buffer=buffer;hp.type='highpass';hp.frequency.value=520;
+  ng.gain.setValueAtTime(.0001,t);ng.gain.linearRampToValueAtTime(.095,t+.4);ng.gain.setValueAtTime(.095,t+1.6);ng.gain.exponentialRampToValueAtTime(.0001,t+2.76);
+  noise.connect(hp).connect(ng).connect(master);noise.start(t);noise.stop(t+d);
+ }catch(e){}
+}
+function shuffleArray(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function format(sec){const s=Math.max(0,Math.floor(sec));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function seconds(ms){return (ms/1000).toFixed(1)+'秒'}
+function renderTiles(s,active=null,top=null){for(let i=0;i<s.order.length;i++){const id=s.order[i],el=s.elements[id];if(active===id)continue;el.style.top=`${i*s.rowHeight+2}px`;el.style.zIndex='2'}if(active!==null&&top!==null){const a=s.elements[active];a.style.top=top+'px';a.style.zIndex='9'}}
+function measuredHeight(s){return s.shaft.clientHeight/s.order.length}
+function finishMove(s,evt){if(!s.drag || s.drag.pid!==evt.pointerId)return;const id=s.drag.id;s.elements[id].classList.remove('dragging');s.drag=null;renderTiles(s);if(s.order.every((value,i)=>s.characters[value]===s.correct[i]))resolve(s)}
+function onPointerDown(e,s,id){if(s.solved||s.launching)return;if(s.drag)return;ctx();const tile=s.elements[id];const pos=s.order.indexOf(id),bounds=s.shaft.getBoundingClientRect();s.rowHeight=measuredHeight(s);const center=bounds.top+pos*s.rowHeight+s.rowHeight/2;
+ s.drag={pid:e.pointerId,id,offset:e.clientY-center};tile.classList.add('dragging');tile.setPointerCapture(e.pointerId);if(s.started===null)s.started=performance.now();e.preventDefault()}
+function onPointerMove(e,s,id){const d=s.drag;if(!d||d.pid!==e.pointerId||d.id!==id)return;const r=s.shaft.getBoundingClientRect(),n=s.order.length;const center=clamp(e.clientY-d.offset,r.top+s.rowHeight/2,r.top+(n-.5)*s.rowHeight);const target=clamp(Math.round((center-r.top-s.rowHeight/2)/s.rowHeight),0,n-1);let pos=s.order.indexOf(id);
+ while(pos!==target){const next=pos+(target>pos?1:-1);[s.order[pos],s.order[next]]=[s.order[next],s.order[pos]];pos=next}renderTiles(s,id,center-r.top-s.rowHeight/2+2);e.preventDefault()}
+function makeStation(text,k){const s={index:k,correct:[...text],characters:[...text],order:[],elements:[],started:null,completed:null,solved:false,launching:false,drag:null,rowHeight:0,earned:0};const station=document.createElement('div');station.className='station';station.style.setProperty('--rows',String(text.length));station.innerHTML=`<div class="name">${['壹','貳','參'][k]}號文字箭</div><div class="clock">未啟動</div><div class="rocket-shell"><div class="nose"></div><div class="fins"></div><div class="shaft" role="group" aria-label="第${k+1}列文字，拖動各字交換順序"></div><div class="thruster"></div><div class="flame"></div></div><div class="station-marker">✓ 發射成功<small class="reward"></small></div><div class="outcome">待整理</div>`;
+ s.station=station;s.shaft=station.querySelector('.shaft');s.clock=station.querySelector('.clock');s.outcome=station.querySelector('.outcome');s.reward=station.querySelector('.reward');s.order=shuffleArray(s.correct.map((_,i)=>i));if(s.order.every((v,i)=>v===i)) [s.order[0],s.order[1]]=[s.order[1],s.order[0]];
+ s.order.forEach(()=>{});s.characters.forEach((ch,id)=>{const el=document.createElement('div');el.className='tile';el.textContent=ch;el.setAttribute('role','button');el.setAttribute('tabindex','0');el.setAttribute('aria-label',`移動「${ch}」字，可使用方向鍵`);s.shaft.append(el);s.elements[id]=el;
+ el.addEventListener('pointerdown',e=>onPointerDown(e,s,id));el.addEventListener('pointermove',e=>onPointerMove(e,s,id));el.addEventListener('pointerup',e=>finishMove(s,e));el.addEventListener('pointercancel',e=>finishMove(s,e));el.addEventListener('lostpointercapture',()=>{if(s.drag&&s.drag.id===id){el.classList.remove('dragging');s.drag=null;renderTiles(s);if(s.order.every((v,i)=>s.characters[v]===s.correct[i]))resolve(s)}});
+ el.addEventListener('keydown',e=>{if(s.solved)return;if(e.key!=='ArrowUp'&&e.key!=='ArrowDown')return;ctx();if(s.started===null)s.started=performance.now();let pos=s.order.indexOf(id),dir=e.key==='ArrowDown'?1:-1,next=pos+dir;if(next>=0&&next<s.order.length){[s.order[pos],s.order[next]]=[s.order[next],s.order[pos]];renderTiles(s);if(s.order.every((v,i)=>s.characters[v]===s.correct[i]))resolve(s)}e.preventDefault()});
+ });return s}
+function resolve(s){if(s.solved)return;s.solved=true;s.completed=performance.now();const elapsed=(s.completed-s.started)/1000;const timeBonus=Math.max(0,100-Math.floor(elapsed*4));s.earned=100+timeBonus;rocketBase+=100;rocketSpeed+=timeBonus;points+=s.earned;flightCount++;$('#score').textContent=points;$('#launched').textContent=`${flightCount} / ${stations.length}`;s.clock.textContent=`完成 ${seconds(s.completed-s.started)}`;s.outcome.textContent=`+${s.earned}分｜點火！`;s.station.classList.add('solved','igniting');s.elements.forEach(el=>{el.tabIndex=-1;el.style.pointerEvents='none'});launchSound();const token=roundToken;
+ setTimeout(()=>{if(token!==roundToken)return;s.station.classList.remove('igniting');s.station.classList.add('launching');s.outcome.textContent='🚀 升空中…'},660);
+ setTimeout(()=>{if(token!==roundToken)return;s.station.classList.remove('launching');s.station.classList.add('launched');s.reward.textContent=`本箭 +${s.earned} 分`;s.outcome.textContent='成功升空'},3330);
+ if(flightCount===stations.length)setTimeout(()=>{if(token!==roundToken)return;window.parent.postMessage({type:'RED_RIVER_ROCKET_DONE_V1',chapter,base:rocketBase,speed:rocketSpeed,total:points},'*');$('#result').textContent=`本章三支火箭已成功升空！累計 ${points} 分；本章用時 ${seconds(performance.now()-chapterStart)}。`;$('#finish').classList.remove('hidden');$('#finish h2').textContent=(chapter===0?'第一章':'第二章')+'・三箭全部升空！';$('#again').textContent='🚀 返回本章漫畫回顧 →';$('#finish').scrollIntoView({behavior:'smooth',block:'nearest'})},3400);
+}
+function start(resetAll=false){
+ roundToken++;stations.length=0;flightCount=0;chapterStart=performance.now();
+ if(resetAll){chapter=Number(new URLSearchParams(location.search).get('chapter'))===1?1:0;points=0;rocketBase=0;rocketSpeed=0;chapterEntryPoints=0;roundStart=chapterStart;}else{points=0;rocketBase=0;rocketSpeed=0;}
+ $('#score').textContent=points;$('#launched').textContent=`0 / 3`;
+ $('#chapterName').textContent=CHAPTERS[chapter].name;
+ $('#finish').classList.add('hidden');const list=$('#columns');list.replaceChildren();
+ CHAPTERS[chapter].text.forEach((t,i)=>{const s=makeStation(t,i);stations.push(s);list.append(s.station)});
+ requestAnimationFrame(()=>{for(const s of stations){s.rowHeight=measuredHeight(s);renderTiles(s)}});
+}
+function tick(){const now=performance.now();$('#totalTime').textContent=format((now-roundStart)/1000);for(const s of stations){if(s.started!==null&&!s.solved)s.clock.textContent=`${seconds(now-s.started)} 計時中`; }raf=requestAnimationFrame(tick)}
+$('#shuffle').addEventListener('click',()=>start(false));$('#again').addEventListener('click',()=>{window.parent.postMessage({type:'RED_RIVER_ROCKET_CONTINUE_V1',chapter},'*')});$('#sound').addEventListener('click',()=>{soundOn=!soundOn;$('#sound').textContent=soundOn?'🔊 引擎音效：開':'🔇 引擎音效：關';$('#sound').setAttribute('aria-pressed',String(soundOn))});start(true);tick();
+})();
+</script>
+</body></html>
